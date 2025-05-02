@@ -1,0 +1,6 @@
+[core]
+    remote = driveremote
+['remote "localremote"']
+    url = ../../localremote
+['remote "driveremote"']
+    url = s3://dvc-testbucket/dvc_folder/
