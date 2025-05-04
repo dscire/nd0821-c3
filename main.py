@@ -7,8 +7,8 @@ import joblib
 
 
 app = FastAPI(
-    title="My model API",
-    description="TO DO",
+    title="My salary prediction API",
+    description="This API predict whether income exceeds $50K/yr based on a RandomForest classifier trained on census data.",
     version="0.1.0"
 )
 
