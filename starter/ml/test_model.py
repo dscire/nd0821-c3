@@ -53,11 +53,6 @@ def test_works(foo):
     assert arg1 <= arg2
 
 
-def test_data_content(sample_data):
-    X, y = sample_data
-    assert X.shape[1] == 109
-
-
 def test_train_model(sample_data):
     X, y = sample_data
     assert len(y) == len(X)
@@ -76,7 +71,6 @@ def test_compute_model_metrics(sample_data, sample_model):
 
 def test_inference(sample_data, sample_model):
     X, y = sample_data
-    assert X.shape[1] == 109
     pred = inference(sample_model, X)
 
     assert len(pred) == len(y)

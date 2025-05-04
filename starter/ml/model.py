@@ -23,9 +23,9 @@ def train_model(X_train, y_train):
     """
 
     param_grid = {
-        'n_estimators': [200],  # [200, 500],
+        'n_estimators': [100],  # [200, 500],
         'max_features': ['sqrt'],
-        'max_depth': [20],  # [4,5,100],
+        'max_depth': [5],  # [4,5,100],
         'criterion': ['gini'],  # ['gini', 'entropy']
     }
 
@@ -78,13 +78,3 @@ def inference(model, X):
         Predictions from the model.
     """
     return model.predict(X)
-
-
-def load_model(model_path='./model/rfc_model.pkl'):
-    """_summary_
-
-    Args:
-        model_path (_type_): _description_
-    """
-    model = joblib.load(model_path)
-    return model
