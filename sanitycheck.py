@@ -30,7 +30,7 @@ def run_sanity_check(test_dir):
 
     test_functions_for_get = list(filter(lambda x: inspect.getsource(getattr(module,x)).find('.get(') != -1 , test_function_names))
     test_functions_for_post = list(filter(lambda x: inspect.getsource(getattr(module,x)).find('.post(') != -1, test_function_names))
-    
+
 
     print("\n============= Sanity Check Report ===========")
     SANITY_TEST_PASSING = True
@@ -60,7 +60,7 @@ def run_sanity_check(test_dir):
             print(FAIL_COLOR+f"[{WARNING_COUNT}]")
             WARNING_COUNT += 1
             print(FAIL_COLOR+"Your test case for GET() does not seem to be testing the response code.\n")
-        
+
         if not TEST_FOR_GET_METHOD_RESPONSE_BODY:
             print(FAIL_COLOR+f"[{WARNING_COUNT}]")
             WARNING_COUNT += 1
@@ -68,7 +68,7 @@ def run_sanity_check(test_dir):
 
 
 
-    ## POST() 
+    ## POST()
     TEST_FOR_POST_METHOD_RESPONSE_CODE = False
     TEST_FOR_POST_METHOD_RESPONSE_BODY = False
     COUNT_POST_METHOD_TEST_FOR_INFERENCE_RESULT = 0
@@ -122,7 +122,7 @@ def run_sanity_check(test_dir):
 
     if SANITY_TEST_PASSING:
         print(OK_COLOR+"Your test cases look good!")
-    
+
     print(WARN_COLOR+"This is a heuristic based sanity testing and cannot guarantee the correctness of your code.")
     print(WARN_COLOR+"You should still check your work against the rubric to ensure you meet the criteria.")
 
@@ -133,4 +133,3 @@ if __name__ == "__main__":
     parser.add_argument('test_dir',metavar='test_dir',nargs='?',default='tests',help='Name of the directory that has test files.')
     args = parser.parse_args()
     run_sanity_check(args.test_dir)
-
