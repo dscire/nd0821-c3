@@ -1,5 +1,9 @@
 from sklearn.metrics import fbeta_score, precision_score, recall_score
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.model_selection import GridSearchCV
 
+import logging
+import joblib
 
 # Optional: implement hyperparameter tuning.
 def train_model(X_train, y_train):
@@ -18,7 +22,23 @@ def train_model(X_train, y_train):
         Trained machine learning model.
     """
 
-    pass
+    param_grid = {
+        'n_estimators': [200],  # [200, 500],
+        'max_features': ['sqrt'],
+        'max_depth': [20],  # [4,5,100],
+        'criterion': ['gini'],  # ['gini', 'entropy']
+    }
+
+    logging.info(f"Training RandomForest with grid search:{param_grid}")
+
+    rfc = RandomForestClassifier(random_state=42)
+    cv_rfc = GridSearchCV(estimator=rfc, param_grid=param_grid, cv=5)
+    cv_rfc.fit(X_train, y_train)
+    rfc = cv_rfc.best_estimator_
+
+    logging.info(f"RandomForest best params are:{rfc.get_params()}")
+
+    return rfc
 
 
 def compute_model_metrics(y, preds):
@@ -57,4 +77,14 @@ def inference(model, X):
     preds : np.array
         Predictions from the model.
     """
-    pass
+    return model.predict(X)
+
+
+def load_model(model_path='./model/rfc_model.pkl'):
+    """_summary_
+
+    Args:
+        model_path (_type_): _description_
+    """
+    model = joblib.load(model_path)
+    return model
