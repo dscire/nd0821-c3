@@ -2,8 +2,60 @@
 #from typing import Literal
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
-from starter.ml.model import *
+#from starter.ml.model import *
+#from starter.ml.data import *
+from starter.ml import model, data
+import pandas as pd
 import joblib
+
+
+cat_features = [
+    "workclass",
+    "education",
+    "marital-status",
+    "occupation",
+    "relationship",
+    "race",
+    "sex",
+    "native-country",
+]
+
+class WorkerInfo(BaseModel):
+    age: int
+    workclass: str
+    fnlgt: int
+    education: str
+    education_num: int
+    marital_status: str
+    occupation: str
+    relationship: str
+    race: str
+    sex: str
+    capital_gain: int
+    capital_loss: int
+    hours_per_week: int
+    native_country: str
+
+    class Config:
+        schema_extra = {
+            "example":
+                {
+                    "age": 42,
+                    "workclass": "Private",
+                    "fnlgt": 159449,
+                    "education": "Bachelors",
+                    "education_num": 13,
+                    "marital_status": "Married-civ-spouse",
+                    "occupation": "Exec-managerial",
+                    "relationship": "Husband",
+                    "race": "White",
+                    "sex": "Male",
+                    "capital_gain": 5178,
+                    "capital_loss": 0,
+                    "hours_per_week": 40,
+                    "native_country": "United-States"
+                }
+        }
 
 
 app = FastAPI(
@@ -12,12 +64,28 @@ app = FastAPI(
     version="0.1.0"
 )
 
-# model = joblib.load('./model/rfc_model.pkl')
-# encoder= joblib.load('./model/encoder.pkl')
-# lb = joblib.load('./model/lb.pkl')
+rfcmodel = joblib.load('./model/rfc_model.pkl')
+encoder= joblib.load('./model/encoder.pkl')
+lb = joblib.load('./model/lb.pkl')
 
 
 # Define a GET on the specified endpoint.
 @app.get("/")
 async def say_hello():
     return {"greeting": "Welcome to my API!"}
+
+
+@app.post("/inference")
+async def inference(worker_info: WorkerInfo):
+    worker_dict = worker_info.dict()
+    worker_dict = {k:[v] for k,v in worker_dict.items()}
+
+    df = pd.DataFrame.from_dict(worker_dict)
+    df.rename(columns=lambda x: x.replace("_","-"), inplace=True)
+
+    X, _, _, _ = data.process_data(
+    df, categorical_features=cat_features,
+    encoder=encoder, lb=lb, training=False)
+    pred = model.inference(rfcmodel, X)
+    y = lb.inverse_transform(pred)[0]
+    return {"prediction": y}
