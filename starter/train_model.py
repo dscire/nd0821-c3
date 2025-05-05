@@ -104,13 +104,13 @@ if __name__ == "__main__":
     precision, recall, fbeta = compute_model_metrics(y_train, y_train_pred)
 
     logging.info(" Metrics on training data:")
-    logging.info(f" prec={precision:.2f}, recall={recall:.2f}, fbeta={fbeta:.2f}")
+    logging.info(f" prec={precision:.4f}, recall={recall:.4f}, fbeta={fbeta:.4f}")
 
     y_test_pred = inference(model, X_test)
     precision, recall, fbeta = compute_model_metrics(y_test, y_test_pred)
 
     logging.info(" Metrics on test data:")
-    logging.info(f" prec={precision:.2f}, recall={recall:.2f}, fbeta={fbeta:.2f}")
+    logging.info(f" prec={precision:.4f}, recall={recall:.4f}, fbeta={fbeta:.4f}")
 
     logging.info(" Metrics on slices:")
     model_slices(model, data, cat_features, encoder, lb)
