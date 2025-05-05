@@ -2,8 +2,7 @@
 ML model that predicts that salary of a worker based on a set
 of features.
 
-Returns:
-    _type_: _description_
+Author: Daniele Sciretti
 """
 
 # Script to train machine learning model.
@@ -24,10 +23,6 @@ logging.basicConfig(level=logging.INFO,
                     format="%(asctime)-15s %(message)s")
 logger = logging.getLogger()
 
-
-# Add the necessary imports for the starter code.
-
-# Add code to load in the data.
 
 def load_and_preprocess_data(dataset_name='./data/census_clean.csv'):
     logger.info(f"Loading data from {dataset_name}")
@@ -92,11 +87,7 @@ if __name__ == "__main__":
     logging.info(f"Saving ML models using extension {model_name}")
 
     # Save model and preprocessing, e.g. encoder
-    # joblib.dump(encoder, './model/encoder_test.pkl')
-    # joblib.dump(lb, './model/lb_test.pkl')
-    # joblib.dump(model, model_name)
-
-    save_models(model, encoder=encoder, lb=lb, naming='_newtest')
+    save_models(model, encoder=encoder, lb=lb, naming='')
 
     logging.info("Computing model metrics")
 

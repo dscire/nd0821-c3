@@ -1,3 +1,7 @@
+"""Tests for the functions provided by model.py
+
+Author: Daniele Sciretti
+"""
 import os
 import pytest
 import joblib

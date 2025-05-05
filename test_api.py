@@ -1,4 +1,5 @@
-"""_summary_
+"""This file contains tests to assess that the GET and POST functions
+of the FastAPI implemented in main.py work as expected.
 """
 import json
 import pytest
@@ -10,7 +11,7 @@ client = TestClient(app)
 def test_api_get():
     r = client.get("/")
     assert r.status_code == 200
-    assert r.json() == {"greeting": "Welcome to my updated API!"}
+    assert r.json() == {"greeting": "Welcome to the salary predictor API!"}
 
 def test_api_inference_below():
     data = {

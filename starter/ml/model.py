@@ -1,3 +1,9 @@
+"""This package provides functionalities to load, train and save a machine
+learning model that predicts salary range of an individual based on the
+relevant "census" features.
+
+Author: Daniele Sciretti
+"""
 from sklearn.metrics import fbeta_score, precision_score, recall_score
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import GridSearchCV
@@ -68,7 +74,7 @@ def inference(model, X):
 
     Inputs
     ------
-    model : ???
+    model : Type may vary
         Trained machine learning model.
     X : np.array
         Data used for prediction.
@@ -85,11 +91,11 @@ def save_models(model, encoder=None, lb=None, naming=""):
 
     Inputs
     ------
-    model (???):
+    model (Type may vary):
         Trained sklearn model file
-    encoder (???, optional):
+    encoder (Type may vary, optional):
         Defined sklearn encoder. Defaults to None.
-    lb (???, optional):
+    lb (Type may vary, optional):
         Defined sklearn label binarizer. Defaults to None.
     naming (str, optional):
         Naming modifier for saved files. Defaults to ''
@@ -108,11 +114,11 @@ def load_models(naming=""):
         Naming modifier for loading files. Defaults to ''
     Returns
     -------
-    model (???):
+    model (Type may vary):
         Trained sklearn model
-    encoder (???):
+    encoder (Type may vary):
         Sklearn encoder.
-    lb (???):
+    lb (Type may vary):
         Sklearn label binarizer.
     """
     model = joblib.load('./model/rfc_model'+naming+'.pkl')

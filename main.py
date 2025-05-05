@@ -1,9 +1,10 @@
-# Put the code for your API here.
-#from typing import Literal
+"""FastAPI implementation of a salary prediction engine.
+Visit the "/docs" page for more details on its usage.
+
+Author: Daniele Sciretti
+"""
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
-#from starter.ml.model import *
-#from starter.ml.data import *
 from starter.ml import model, data
 import pandas as pd
 import joblib
@@ -69,7 +70,7 @@ rfcmodel, encoder, lb = model.load_models(naming='_deploy')
 # Define a GET on the specified endpoint.
 @app.get("/")
 async def say_hello():
-    return {"greeting": "Welcome to my updated API!"}
+    return {"greeting": "Welcome to the salary predictor API!"}
 
 
 @app.post("/inference")
