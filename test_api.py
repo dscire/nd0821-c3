@@ -10,7 +10,7 @@ client = TestClient(app)
 def test_api_get():
     r = client.get("/")
     assert r.status_code == 200
-    assert r.json() == {"greeting": "Welcome to my API!"}
+    assert r.json() == {"greeting": "Welcome to my updated API!"}
 
 def test_api_inference_below():
     data = {

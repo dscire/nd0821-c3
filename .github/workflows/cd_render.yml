@@ -1,5 +1,7 @@
 # .github/workflows/cd_render.yml
 
+name: CD on Render
+
 on:
     workflow_run:
         workflows: ["Python application"]
