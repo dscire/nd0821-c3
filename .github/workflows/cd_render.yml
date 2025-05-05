@@ -11,9 +11,7 @@ on:
 jobs:
     cd:
         runs-on: ubuntu-latest
-        if: |
-            "contains(github.event.head_commit.message, 'DEPLOY')" &&
-            ${{ github.event.workflow_run.conclusion == 'success' }}
+        if: ${{ contains(github.event.head_commit.message, 'DEPLOY') && github.event.workflow_run.conclusion == 'success' }}
 
         steps:
             - uses: actions/checkout@v3
@@ -22,5 +20,6 @@ jobs:
               if: github.ref == 'refs/heads/main'
               env:
                   deploy_url: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
-              run: |
-                  curl "$deploy_url"
+              run: echo "Actions has been triggered"
+              # run: |
+              #    curl "$deploy_url"
