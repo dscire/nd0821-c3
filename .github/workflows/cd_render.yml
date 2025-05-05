@@ -1,0 +1,20 @@
+# .github/workflows/cd_render.yml
+
+on:
+    workflow_run:
+        workflows: ["Python application"]
+        types:
+          - completed
+
+jobs:
+    cd:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v3
+            - name: Deploy
+              # Only run this step if the branch is main
+              if: github.ref == 'refs/heads/main'
+              env:
+                  deploy_url: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
+              run: |
+                  curl "$deploy_url"

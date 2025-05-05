@@ -69,7 +69,7 @@ rfcmodel, encoder, lb = model.load_models(naming='_deploy')
 # Define a GET on the specified endpoint.
 @app.get("/")
 async def say_hello():
-    return {"greeting": "Welcome to my API!"}
+    return {"greeting": "Welcome to my updated API!"}
 
 
 @app.post("/inference")
