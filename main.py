@@ -61,7 +61,7 @@ class WorkerInfo(BaseModel):
 app = FastAPI(
     title="My salary prediction API",
     description="This API predict whether income exceeds $50K/yr based on a RandomForest classifier trained on census data.",
-    version="0.1.0"
+    version="0.2.0"
 )
 
 rfcmodel, encoder, lb = model.load_models(naming='_deploy')
@@ -69,7 +69,7 @@ rfcmodel, encoder, lb = model.load_models(naming='_deploy')
 # Define a GET on the specified endpoint.
 @app.get("/")
 async def say_hello():
-    return {"greeting": "Welcome to my old API!"}
+    return {"greeting": "Welcome to my updated API!"}
 
 
 @app.post("/inference")
