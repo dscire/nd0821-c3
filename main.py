@@ -64,10 +64,7 @@ app = FastAPI(
     version="0.1.0"
 )
 
-rfcmodel = joblib.load('./model/rfc_model.pkl')
-encoder= joblib.load('./model/encoder.pkl')
-lb = joblib.load('./model/lb.pkl')
-
+rfcmodel, encoder, lb = model.load_models(naming='_deploy')
 
 # Define a GET on the specified endpoint.
 @app.get("/")

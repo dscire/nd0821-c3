@@ -37,6 +37,7 @@ def load_and_preprocess_data(dataset_name='./data/census_clean.csv'):
 
 def model_slices(model, data, categorical_features, encoder, lb):
 
+    slice_output = ""
     for cat in categorical_features:
         for val in data[cat].unique():
             data_tmp = data[data[cat] == val]
@@ -45,9 +46,14 @@ def model_slices(model, data, categorical_features, encoder, lb):
                 label="salary", encoder=encoder, lb=lb, training=False)
             y_pred = inference(model, X)
             precision, recall, fbeta = compute_model_metrics(y, y_pred)
-            msg = f" == category {cat}/{val}: "
-            msg += f"prec={precision:.2f}, recall={recall:.2f}, fbeta={fbeta:.2f}"
+            msg = f" [{cat}/{val}]: "\
+                f"prec={precision:.4f}, recall={recall:.4f}, "\
+                f"fbeta={fbeta:.4f}"
+            slice_output += msg + "\n"
             logging.info(msg)
+
+    with open("./logs/slice_output.txt","w") as of:
+        of.write(slice_output)
 
 
 if __name__ == "__main__":
@@ -78,17 +84,19 @@ if __name__ == "__main__":
         encoder=encoder, lb=lb
     )
 
-    # Save preprocessing, e.g. encoder
-    joblib.dump(encoder, './model/encoder_test.pkl')
-    joblib.dump(lb, './model/lb_test.pkl')
-
     # Train and save a model.
     logging.info("Training ML model")
     model = train_model(X_train, y_train)
 
     model_name = './model/rfc_model_test.pkl'
-    logging.info(f"Saving ML model to file {model_name}")
-    joblib.dump(model, model_name)
+    logging.info(f"Saving ML models using extension {model_name}")
+
+    # Save model and preprocessing, e.g. encoder
+    # joblib.dump(encoder, './model/encoder_test.pkl')
+    # joblib.dump(lb, './model/lb_test.pkl')
+    # joblib.dump(model, model_name)
+
+    save_models(model, encoder=encoder, lb=lb, naming='_newtest')
 
     logging.info("Computing model metrics")
 

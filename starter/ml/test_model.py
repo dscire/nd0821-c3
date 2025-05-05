@@ -1,3 +1,4 @@
+import os
 import pytest
 import joblib
 import collections
@@ -7,12 +8,20 @@ from starter.ml.model import *
 from starter.ml.data import *
 
 
-# Create fixture to load mode and sample data for testing
 @pytest.fixture(autouse=True)
-def sample_data():
-    data = pd.read_csv('./data/census_clean.csv')
+def sample_models():
+    model = joblib.load('./model/rfc_model.pkl')
     encoder = joblib.load('./model/encoder.pkl')
     lb = joblib.load('./model/lb.pkl')
+    return model, encoder, lb
+
+
+# Create fixture to load mode and sample data for testing
+@pytest.fixture(autouse=True)
+def sample_data(sample_models):
+    data = pd.read_csv('./data/census_clean.csv')
+
+    _, encoder, lb = sample_models
 
     cat_features = [
         "workclass",
@@ -33,34 +42,15 @@ def sample_data():
     return X, y
 
 
-@pytest.fixture(autouse=True)
-def foo():
-    return 1, 2
-
-@pytest.fixture
-def sample_model():
-    model = joblib.load('./model/rfc_model.pkl')
-    return model
-
-# Gets fixture automagically through autouse
-#def test_breaks():
-#    arg1, arg2 = foo
-#    assert arg1 <= arg2
-
-# Explicit request for fixture foo
-def test_works(foo):
-    arg1, arg2 = foo
-    assert arg1 <= arg2
-
-
 def test_train_model(sample_data):
     X, y = sample_data
     assert len(y) == len(X)
 
 
-def test_compute_model_metrics(sample_data, sample_model):
+def test_compute_model_metrics(sample_data, sample_models):
     X, y = sample_data
-    pred = inference(sample_model, X)
+    model, _, _ = sample_models
+    pred = inference(model, X)
     precision, recall, fbeta = compute_model_metrics(y, pred)
 
     assert isinstance(precision, float)
@@ -69,12 +59,26 @@ def test_compute_model_metrics(sample_data, sample_model):
     assert isinstance(fbeta, float)
 
 
-def test_inference(sample_data, sample_model):
+def test_inference(sample_data, sample_models):
     X, y = sample_data
-    pred = inference(sample_model, X)
+    model, _, _ = sample_models
+    pred = inference(model, X)
 
     assert len(pred) == len(y)
     assert isinstance(pred, np.ndarray)
 
 
-# test_compute_model_metrics(sample_data, sample_model)
+def test_save_models(sample_models):
+    model, encoder, lb = sample_models
+    test_naming = '_ptst'
+    save_models(model, encoder, lb, naming=test_naming)
+    assert os.path.isfile('./model/rfc_model'+test_naming+'.pkl')
+    assert os.path.isfile('./model/encoder'+test_naming+'.pkl')
+    assert os.path.isfile('./model/lb'+test_naming+'.pkl')
+
+
+def test_load_models():
+    model, encoder, lb = load_models(naming='')
+    assert model != None
+    assert encoder != None
+    assert lb != None

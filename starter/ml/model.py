@@ -78,3 +78,45 @@ def inference(model, X):
         Predictions from the model.
     """
     return model.predict(X)
+
+
+def save_models(model, encoder=None, lb=None, naming=""):
+    """Save models and encoders to pkl files
+
+    Inputs
+    ------
+    model (???):
+        Trained sklearn model file
+    encoder (???, optional):
+        Defined sklearn encoder. Defaults to None.
+    lb (???, optional):
+        Defined sklearn label binarizer. Defaults to None.
+    naming (str, optional):
+        Naming modifier for saved files. Defaults to ''
+    """
+    joblib.dump(model, './model/rfc_model'+naming+'.pkl')
+    joblib.dump(encoder, './model/encoder'+naming+'.pkl')
+    joblib.dump(lb, './model/lb'+naming+'.pkl')
+
+
+def load_models(naming=""):
+    """Load models and encoders from files
+
+    Inputs
+    ------
+    naming (str, optional):
+        Naming modifier for loading files. Defaults to ''
+    Returns
+    -------
+    model (???):
+        Trained sklearn model
+    encoder (???):
+        Sklearn encoder.
+    lb (???):
+        Sklearn label binarizer.
+    """
+    model = joblib.load('./model/rfc_model'+naming+'.pkl')
+    encoder = joblib.load('./model/encoder'+naming+'.pkl')
+    lb = joblib.load('./model/lb'+naming+'.pkl')
+
+    return model, encoder, lb
